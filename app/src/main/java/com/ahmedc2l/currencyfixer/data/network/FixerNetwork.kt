@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -46,6 +47,6 @@ object FixerNetwork {
 interface FixerApiServices {
     // "latest" endpoint - request the most recent exchange rate data
     @GET("api/latest?access_key=520ea67c656a30b78a48036ef0cae619&format=1")
-    fun getLatestExchangeRatesAsync(): Deferred<Response<LatestExchangeRatesResponseModel>>
+    fun getLatestExchangeRatesAsync(): Deferred<Response<ResponseBody>>
 }
 

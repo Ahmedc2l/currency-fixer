@@ -1,5 +1,6 @@
 package com.ahmedc2l.currencyfixer.app.converter
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,7 +42,9 @@ class ConverterViewModel @Inject constructor(
             _loading.postValue(true)
             getLatestExchangeRatesUseCase.invoke().fold({
                 _error.postValue(it.toErrorString())
-            }, {})
+            }, {
+                Log.i("TAG", "getLatestExchangeRates: $it")
+            })
             _loading.postValue(false)
         }
     }
