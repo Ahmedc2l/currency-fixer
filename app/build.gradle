@@ -24,6 +24,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "FIXER_BASE_URL", "\"http://data.fixer.io/\""
+        }
+        debug {
+            buildConfigField "String", "FIXER_BASE_URL", "\"http://data.fixer.io/\""
+            versionNameSuffix "-debug"
         }
     }
     compileOptions {
