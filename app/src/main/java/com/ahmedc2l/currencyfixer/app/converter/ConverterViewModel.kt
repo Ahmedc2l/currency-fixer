@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ahmedc2l.currencyfixer.data.models.LatestExchangeRatesModel
+import com.ahmedc2l.currencyfixer.data.models.toDomainEntity
+import com.ahmedc2l.currencyfixer.domain.entities.LatestExchangeRates
 import com.ahmedc2l.currencyfixer.domain.usecases.GetLatestExchangeRatesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -29,8 +31,8 @@ class ConverterViewModel @Inject constructor(
     val error: LiveData<String?>
         get() = _error
 
-    private val _latestExchangeRates = MutableLiveData<LatestExchangeRatesModel>()
-    val latestExchangeRates: LiveData<LatestExchangeRatesModel>
+    private val _latestExchangeRates = MutableLiveData<LatestExchangeRates>()
+    val latestExchangeRates: LiveData<LatestExchangeRates>
         get() = _latestExchangeRates
 
     fun onErrorMessageShown() {
@@ -38,7 +40,7 @@ class ConverterViewModel @Inject constructor(
     }
 
     init {
-        _latestExchangeRates.value = LatestExchangeRatesModel.getLastSaved()
+        _latestExchangeRates.value = LatestExchangeRatesModel.getLastSaved().toDomainEntity()
         // TODO uncomment when you're done testing the default locally stored exchange rates
 //        getLatestExchangeRates()
     }

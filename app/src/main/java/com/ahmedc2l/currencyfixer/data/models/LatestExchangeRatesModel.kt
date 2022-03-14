@@ -2,6 +2,8 @@ package com.ahmedc2l.currencyfixer.data.models
 
 import android.util.Log
 import com.ahmedc2l.currencyfixer.data.utils.SharedPreferencesUtils
+import com.ahmedc2l.currencyfixer.domain.entities.Country
+import com.ahmedc2l.currencyfixer.domain.entities.LatestExchangeRates
 import com.google.gson.Gson
 
 data class LatestExchangeRatesModel(
@@ -10,8 +12,8 @@ data class LatestExchangeRatesModel(
     val base: String,
     val date: String,
     val rates: Map<String, Double>
-){
-    companion object{
+) {
+    companion object {
         private const val defaultRates = "{\n" +
                 "      \"success\":true,\n" +
                 "      \"timestamp\":1647239583,\n" +
@@ -189,7 +191,7 @@ data class LatestExchangeRatesModel(
                 "      }" +
                 "    }"
 
-        fun saveToSharedPreferences(jsonString: String){
+        fun saveToSharedPreferences(jsonString: String) {
             Log.i("TAG", "saveToSharedPreferences: $jsonString")
             SharedPreferencesUtils.saveString("_latest_rates", jsonString)
         }
@@ -203,3 +205,9 @@ data class LatestExchangeRatesModel(
         }
     }
 }
+
+fun LatestExchangeRatesModel.toDomainEntity(): LatestExchangeRates =
+    LatestExchangeRates(this.timestamp, this.rates.toDomainCountries())
+
+fun Map<String, Double>.toDomainCountries(): List<Country> =
+    this.map { Country(it.key, it.value) }

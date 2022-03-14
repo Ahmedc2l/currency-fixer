@@ -2,11 +2,13 @@ package com.ahmedc2l.currencyfixer.data.datasources
 
 import arrow.core.Either
 import com.ahmedc2l.currencyfixer.data.models.LatestExchangeRatesModel
+import com.ahmedc2l.currencyfixer.data.models.toDomainEntity
 import com.ahmedc2l.currencyfixer.data.network.FixerNetwork
 import com.ahmedc2l.currencyfixer.data.utils.AppFailure
 import com.ahmedc2l.currencyfixer.data.utils.FixerNetworkFailure
 import com.ahmedc2l.currencyfixer.data.utils.SomethingWentWrongFailure
 import com.ahmedc2l.currencyfixer.data.utils.getErrorString
+import com.ahmedc2l.currencyfixer.domain.entities.LatestExchangeRates
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -17,7 +19,7 @@ import javax.inject.Inject
 class ExchangeRatesDataSourceImpl @Inject constructor(private val dispatcher: CoroutineDispatcher) :
     ExchangeRatesDataSource {
 
-    override suspend fun getLatestExchangeRates(): Either<AppFailure, LatestExchangeRatesModel> = withContext(dispatcher){
+    override suspend fun getLatestExchangeRates(): Either<AppFailure, LatestExchangeRates> = withContext(dispatcher){
         try {
             val response =
                 FixerNetwork.fixerApiServices.getLatestExchangeRatesAsync().await().body()
@@ -31,7 +33,7 @@ class ExchangeRatesDataSourceImpl @Inject constructor(private val dispatcher: Co
                     val successResult = gson.fromJson(responseObject.toString(),
                         LatestExchangeRatesModel::class.java)
                     LatestExchangeRatesModel.saveToSharedPreferences(responseString)
-                    Either.Right(successResult)
+                    Either.Right(successResult.toDomainEntity())
                 }else
                     Either.Left(FixerNetworkFailure(responseObject.getErrorString()))
             } ?: Either.Left(SomethingWentWrongFailure("No body"))
