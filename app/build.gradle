@@ -24,10 +24,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "FIXER_BASE_URL", "\"https://data.fixer.io/\""
+            buildConfigField "String", "FIXER_BASE_URL", "\"http://data.fixer.io/\""
         }
         debug {
-            buildConfigField "String", "FIXER_BASE_URL", "\"https://data.fixer.io/\""
+            buildConfigField "String", "FIXER_BASE_URL", "\"http://data.fixer.io/\""
             versionNameSuffix "-debug"
         }
     }
@@ -93,6 +93,9 @@ dependencies {
     // Hilt (Dependency Injection)
     implementation 'com.google.dagger:hilt-android:2.39.1'
     kapt 'com.google.dagger:hilt-compiler:2.39.1'
+
+    // Shared Preferences
+    implementation "androidx.preference:preference-ktx:1.2.0"
 }
 
 // Allow references to generated code

@@ -1,7 +1,6 @@
 package com.ahmedc2l.currencyfixer.data.network
 
 import com.ahmedc2l.currencyfixer.BuildConfig
-import com.ahmedc2l.currencyfixer.data.models.LatestExchangeRatesResponseModel
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
