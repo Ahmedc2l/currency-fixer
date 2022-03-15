@@ -207,7 +207,7 @@ data class LatestExchangeRatesModel(
 }
 
 fun LatestExchangeRatesModel.toDomainEntity(): LatestExchangeRates =
-    LatestExchangeRates(this.timestamp, this.rates.toDomainCountries())
+    LatestExchangeRates(this.date, this.rates.toDomainCountries())
 
 fun Map<String, Double>.toDomainCountries(): List<Country> =
     this.map { Country(it.key, it.value) }

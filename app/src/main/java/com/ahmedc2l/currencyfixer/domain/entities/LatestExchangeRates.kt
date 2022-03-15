@@ -1,9 +1,10 @@
 package com.ahmedc2l.currencyfixer.domain.entities
 
 data class LatestExchangeRates(
-    val dateTime: Long,
+    val date: String,
     val countries: List<Country>
-)
+){
+}
 
 data class Country(
     val currency: String,

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -8,16 +9,113 @@
             type="com.ahmedc2l.currencyfixer.app.converter.ConverterViewModel" />
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color2"
         tools:context=".app.converter.ConverterFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/_20sdp" />
 
-    </FrameLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/_20sdp" />
+
+        <TextView
+            android:id="@+id/textView_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/color1"
+            android:gravity="center"
+            android:text="@{@string/last_updated_on(viewModel.latestExchangeRates.date)}"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="2022-03-14" />
+
+        <Spinner
+            android:id="@+id/spinner_from"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:onItemSelected="@{viewModel.onFromCountrySelected}"
+            app:layout_constraintEnd_toStartOf="@+id/imageView_swap"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/textView_date" />
+
+        <ImageButton
+            android:id="@+id/imageView_swap"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/action_swap"
+            android:onClick="@{() -> viewModel.onSwapClicked()}"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner_from"
+            app:layout_constraintEnd_toStartOf="@+id/spinner_to"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/spinner_from"
+            app:layout_constraintTop_toTopOf="@+id/spinner_from"
+            app:srcCompat="@drawable/ic_swap_horiz" />
+
+        <Spinner
+            android:id="@+id/spinner_to"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onItemSelected="@{viewModel.onToCountrySelected}"
+            app:layout_constraintBottom_toBottomOf="@+id/spinner_from"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageView_swap"
+            app:layout_constraintTop_toTopOf="@+id/spinner_from" />
+
+        <EditText
+            android:id="@+id/editText_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:onTextChanged="@{viewModel.onAmountTextChange}"
+            android:text="@{viewModel.amount + ``}"
+            app:layout_constraintEnd_toStartOf="@+id/space"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_from" />
+
+        <Space
+            android:id="@+id/space"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/editText_amount"
+            app:layout_constraintEnd_toStartOf="@+id/editText_result"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/editText_amount"
+            app:layout_constraintTop_toTopOf="@+id/editText_amount" />
+
+        <EditText
+            android:id="@+id/editText_result"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="numberDecimal"
+            android:text="@{viewModel.resultAmount + ``}"
+            app:layout_constraintBottom_toBottomOf="@+id/editText_amount"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/space"
+            app:layout_constraintTop_toTopOf="@+id/editText_amount" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

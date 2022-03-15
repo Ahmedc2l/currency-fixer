@@ -8,6 +8,7 @@ import com.ahmedc2l.currencyfixer.data.utils.AppFailure
 import com.ahmedc2l.currencyfixer.data.utils.FixerNetworkFailure
 import com.ahmedc2l.currencyfixer.data.utils.SomethingWentWrongFailure
 import com.ahmedc2l.currencyfixer.data.utils.getErrorString
+import com.ahmedc2l.currencyfixer.domain.entities.Country
 import com.ahmedc2l.currencyfixer.domain.entities.LatestExchangeRates
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
@@ -41,5 +42,13 @@ class ExchangeRatesDataSourceImpl @Inject constructor(private val dispatcher: Co
         }catch (e: Exception){
             return@withContext Either.Left(SomethingWentWrongFailure(e.message))
         }
+    }
+
+    override suspend fun convertCurrencies(
+        fromCountry: Country,
+        toCountry: Country,
+        amount: Int
+    ): Either<AppFailure, Double> {
+        return Either.Right(toCountry.exchangeRateEUR / fromCountry.exchangeRateEUR * amount)
     }
 }
