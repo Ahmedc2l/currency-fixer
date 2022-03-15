@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ahmedc2l.currencyfixer.data.models.LatestExchangeRatesModel
 import com.ahmedc2l.currencyfixer.data.models.toDomainEntity
-import com.ahmedc2l.currencyfixer.domain.entities.Country
 import com.ahmedc2l.currencyfixer.domain.entities.LatestExchangeRates
 import com.ahmedc2l.currencyfixer.domain.usecases.ConvertCurrenciesUseCase
 import com.ahmedc2l.currencyfixer.domain.usecases.GetLatestExchangeRatesUseCase
@@ -44,13 +43,13 @@ class ConverterViewModel @Inject constructor(
     val latestExchangeRates: LiveData<LatestExchangeRates>
         get() = _latestExchangeRates
 
-    private val _fromCountry = MutableLiveData<Country?>()
-    val fromCountry: LiveData<Country?>
-        get() = _fromCountry
+    private val _fromCountryIndex = MutableLiveData<Int?>()
+    val fromCountryIndex: LiveData<Int?>
+        get() = _fromCountryIndex
 
-    private val _toCountry = MutableLiveData<Country?>()
-    val toCountry: LiveData<Country?>
-        get() = _toCountry
+    private val _toCountryIndex = MutableLiveData<Int?>()
+    val toCountryIndex: LiveData<Int?>
+        get() = _toCountryIndex
 
     private val _amount = MutableLiveData<Int>()
     val amount: LiveData<Int>
@@ -60,7 +59,6 @@ class ConverterViewModel @Inject constructor(
     val resultAmount: LiveData<Double>
         get() = _resultAmount
 
-
     fun onErrorMessageShown() {
         _error.value = null
     }
@@ -68,8 +66,8 @@ class ConverterViewModel @Inject constructor(
     init {
         LatestExchangeRatesModel.getLastSaved().toDomainEntity().also {
             _latestExchangeRates.value = it
-            _fromCountry.value = it.countries[0]
-            _toCountry.value = it.countries[0]
+            _fromCountryIndex.value = 0
+            _toCountryIndex.value = 0
             _amount.value = 1
         }
         // TODO uncomment when you're done testing the default locally stored exchange rates
@@ -88,42 +86,49 @@ class ConverterViewModel @Inject constructor(
         }
     }
 
-    fun convertCurrencies(amount: Int?, fromCountry: Country?, toCountry: Country?){
+    fun convertCurrencies(amount: Int?, fromCountry: Int?, toCountry: Int?) {
         fromCountry?.let { from ->
             toCountry?.let { to ->
-                viewModelScope.launch {
-                    convertCurrenciesUseCase.invoke(from, to, amount ?: 1).fold({
-                        _error.postValue(it.toErrorString())
-                    },{
-                        _resultAmount.value = it
-                    })
+                _latestExchangeRates.value?.let { latestExchangeRates ->
+                    viewModelScope.launch {
+                        convertCurrenciesUseCase.invoke(
+                            latestExchangeRates.countries[from],
+                            latestExchangeRates.countries[to],
+                            amount ?: 1
+                        ).fold({
+                            _error.postValue(it.toErrorString())
+                        }, {
+                            _resultAmount.value = it
+                        })
+                    }
                 }
             } ?: _error.postValue("To country is NULL")
         } ?: _error.postValue("From country is NULL")
     }
 
     fun onAmountTextChange(text: CharSequence?, start: Int, before: Int, count: Int) {
-        if(!text.isNullOrEmpty()){
+        if (!text.isNullOrEmpty()) {
             _amount.value = text.toString().toInt()
         }
     }
 
-    fun onFromCountrySelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long){
+    fun onFromCountrySelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         latestExchangeRates.value?.let {
-            _fromCountry.value = it.countries[position]
+            _fromCountryIndex.value = position
         }
     }
 
-    fun onToCountrySelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long){
+    fun onToCountrySelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         latestExchangeRates.value?.let {
-            _toCountry.value = it.countries[position]
+            _toCountryIndex.value = position
         }
     }
 
-    fun onSwapClicked(){
+    fun onSwapClicked() {
         _swapCountries.value = true
     }
-    fun onCountriesSwapped(){
+
+    fun onCountriesSwapped() {
         _swapCountries.value = false
     }
 
