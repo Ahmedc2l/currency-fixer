@@ -1,5 +1,6 @@
 package com.ahmedc2l.currencyfixer.app.converter
 
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.lifecycle.LiveData
@@ -15,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.lang.NumberFormatException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -87,6 +89,7 @@ class ConverterViewModel @Inject constructor(
     }
 
     fun convertCurrencies(amount: Int?, fromCountry: Int?, toCountry: Int?) {
+        Log.i("TAG", "convertCurrencies: $amount")
         fromCountry?.let { from ->
             toCountry?.let { to ->
                 _latestExchangeRates.value?.let { latestExchangeRates ->
@@ -94,7 +97,7 @@ class ConverterViewModel @Inject constructor(
                         convertCurrenciesUseCase.invoke(
                             latestExchangeRates.countries[from],
                             latestExchangeRates.countries[to],
-                            amount ?: 1
+                            amount ?: 0
                         ).fold({
                             _error.postValue(it.toErrorString())
                         }, {
@@ -107,9 +110,14 @@ class ConverterViewModel @Inject constructor(
     }
 
     fun onAmountTextChange(text: CharSequence?, start: Int, before: Int, count: Int) {
-        if (!text.isNullOrEmpty()) {
-            _amount.value = text.toString().toInt()
-        }
+        if (!text.isNullOrEmpty())
+            try {
+                _amount.value = text.toString().toInt()
+            } catch (e: NumberFormatException) {
+                _amount.value = 0
+            }
+        else
+            _resultAmount.value = 0.0
     }
 
     fun onFromCountrySelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

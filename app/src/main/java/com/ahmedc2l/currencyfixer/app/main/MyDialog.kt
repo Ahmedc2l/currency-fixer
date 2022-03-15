@@ -27,7 +27,7 @@ class MyDialog(private val context: Context) {
     }
 
     fun showErrorMessageDialog(message: String){
-        dialogError.findViewById<TextView>(R.id.tv_error_msg).text = message
+        dialogError.findViewById<TextView>(R.id.textView_error).text = message
         dialogError.show()
     }
 

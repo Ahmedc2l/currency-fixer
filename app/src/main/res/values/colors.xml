@@ -2,5 +2,9 @@
 <resources>
     <color name="color1">#000000</color>
     <color name="color2">#FFFFFF</color>
-    <color name="color3">#018786</color>
+    <color name="color3">#ed3322</color>
+    <color name="color4">#dfeaff</color>
+    <color name="color5">#dee1de</color>
+    <color name="color6">#f2f2f2</color>
+    <color name="color7">#f0e3e0</color>
 </resources>

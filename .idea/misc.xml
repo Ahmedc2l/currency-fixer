@@ -3,10 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Homework/StudioProjects/CurrencyFixer/app/src/main/res/drawable/background_all_curved.xml" value="0.1685" />
+        <entry key="..\:/Users/Homework/StudioProjects/CurrencyFixer/app/src/main/res/drawable/background_spinner.xml" value="0.1685" />
+        <entry key="..\:/Users/Homework/StudioProjects/CurrencyFixer/app/src/main/res/drawable/ic_info_24.xml" value="0.1685" />
         <entry key="..\:/Users/Homework/StudioProjects/CurrencyFixer/app/src/main/res/layout/_dialog_error.xml" value="0.1770516717325228" />
         <entry key="..\:/Users/Homework/StudioProjects/CurrencyFixer/app/src/main/res/layout/_dialog_loading.xml" value="0.1770516717325228" />
         <entry key="..\:/Users/Homework/StudioProjects/CurrencyFixer/app/src/main/res/layout/activity_main.xml" value="0.18246445497630331" />
-        <entry key="..\:/Users/Homework/StudioProjects/CurrencyFixer/app/src/main/res/layout/fragment_converter.xml" value="0.25" />
+        <entry key="..\:/Users/Homework/StudioProjects/CurrencyFixer/app/src/main/res/layout/fragment_converter.xml" value="0.33" />
       </map>
     </option>
   </component>
