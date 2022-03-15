@@ -1,7 +1,6 @@
 package com.ahmedc2l.currencyfixer.data.di
 
 import android.content.Context
-import android.content.res.Resources
 import com.ahmedc2l.currencyfixer.app.main.CurrencyFixerApplication
 import dagger.Module
 import dagger.Provides
