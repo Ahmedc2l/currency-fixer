@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="result"
+            type="com.ahmedc2l.currencyfixer.domain.entities.ExchangeResult" />
+    </data>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color1"
+        android:textSize="@dimen/_12sdp"
+        android:text="@{result.resultString}"
+        android:background="@drawable/background_all_curved"
+        android:backgroundTint="@color/color5"
+        android:padding="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
+        tools:text="15 USD" />
+
+</layout>
+

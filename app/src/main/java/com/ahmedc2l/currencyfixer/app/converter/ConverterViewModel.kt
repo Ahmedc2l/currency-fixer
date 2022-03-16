@@ -1,6 +1,5 @@
 package com.ahmedc2l.currencyfixer.app.converter
 
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.lifecycle.LiveData
@@ -25,7 +24,6 @@ class ConverterViewModel @Inject constructor(
     private val convertCurrenciesUseCase: ConvertCurrenciesUseCase
 ) :
     ViewModel() {
-
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -61,14 +59,19 @@ class ConverterViewModel @Inject constructor(
     val resultAmount: LiveData<Double>
         get() = _resultAmount
 
-    fun onErrorMessageShown() {
-        _error.value = null
-    }
+    private val _fromCountryString = MutableLiveData<String>()
+    val fromCountryString: LiveData<String>
+        get() = _fromCountryString
+
+    private val _goToDetails = MutableLiveData<Boolean>()
+    val goToDetails: LiveData<Boolean>
+        get() = _goToDetails
 
     init {
         LatestExchangeRatesModel.getLastSaved().toDomainEntity().also {
             _latestExchangeRates.value = it
             _fromCountryIndex.value = 0
+            _fromCountryString.value = it.countries[0].currency
             _toCountryIndex.value = 0
             _amount.value = 1
         }
@@ -89,7 +92,6 @@ class ConverterViewModel @Inject constructor(
     }
 
     fun convertCurrencies(amount: Int?, fromCountry: Int?, toCountry: Int?) {
-        Log.i("TAG", "convertCurrencies: $amount")
         fromCountry?.let { from ->
             toCountry?.let { to ->
                 _latestExchangeRates.value?.let { latestExchangeRates ->
@@ -123,6 +125,7 @@ class ConverterViewModel @Inject constructor(
     fun onFromCountrySelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         latestExchangeRates.value?.let {
             _fromCountryIndex.value = position
+            _fromCountryString.value = it.countries[position].currency
         }
     }
 
@@ -138,6 +141,18 @@ class ConverterViewModel @Inject constructor(
 
     fun onCountriesSwapped() {
         _swapCountries.value = false
+    }
+
+    fun onGoToDetailsClicked(){
+        _goToDetails.value = true
+    }
+
+    fun onGoToDetailsNavigated(){
+        _goToDetails.value = false
+    }
+
+    fun onErrorMessageShown() {
+        _error.value = null
     }
 
     override fun onCleared() {
