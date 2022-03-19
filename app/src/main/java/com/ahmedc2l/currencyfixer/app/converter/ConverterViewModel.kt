@@ -75,8 +75,7 @@ class ConverterViewModel @Inject constructor(
             _toCountryIndex.value = 0
             _amount.value = 1
         }
-        // TODO uncomment when you're done testing the default locally stored exchange rates
-//        getLatestExchangeRates()
+        getLatestExchangeRates()
     }
 
     private fun getLatestExchangeRates() {
